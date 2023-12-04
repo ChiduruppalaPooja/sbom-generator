@@ -1,4 +1,3 @@
-print("amaan")
 import requests
 
 def find_manifest_files(repo_owner, repo_name):
