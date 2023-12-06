@@ -1,10 +1,9 @@
 import requests
 from parsers.nodejs_parser import parse_package_json
 from parsers.python_parser import parse_requirements_txt
-# from parsers.python_parser import parse_requirements_txt
 from parsers.java_parser import parse_pom_xml
-# from parsers.ruby_parser import parse_gemfile
-# from parsers.go_parser import parse_go_mod
+from parsers.ruby_parser import parse_gemfile
+from parsers.go_parser import parse_go_mod
 # from parsers.cpp_parser import parse_cmake_lists_txt  
 # from parsers.php_parser import parse_composer_json
 
@@ -105,10 +104,10 @@ def analyze_project(repo_owner, repo_name):
                 parse_pom_xml(repo_owner, repo_name, manifest_path)
             elif "Gemfile" in manifest_file_name:
                 project_type = "ruby"
-                # parse_gemfile(manifest_path)
+                parse_gemfile(repo_owner, repo_name, manifest_path)
             elif "go.mod" in manifest_file_name:
                 project_type = "go"
-                # parse_go_mod(manifest_path)
+                parse_go_mod(repo_owner, repo_name, manifest_path)
             elif "CMakeLists.txt" in manifest_file_name:
                 project_type = "cpp"
                 # parse_cmake_lists_txt(manifest_path)
@@ -133,8 +132,22 @@ if __name__ == "__main__":
     # repo_name = "streamify"
 
     #java
-    repo_owner = "harsha3991"
-    repo_name = "java-maven"
+    # repo_owner = "harsha3991"
+    # repo_name = "java-maven"
+
+    # ruby
+    # repo_owner = "pact-foundation"
+    # repo_name = "pact-ruby"
+
+    #go
+    # repo_owner = "opensbom-generator"
+    # repo_name = "spdx-sbom-generator"
+
+    #cpp
+    repo_owner = "opensbom-generator"
+    repo_name = "spdx-sbom-generator"
+
+
 
 
     analyze_project(repo_owner, repo_name)
