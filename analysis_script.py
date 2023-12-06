@@ -2,7 +2,7 @@ import requests
 from parsers.nodejs_parser import parse_package_json
 from parsers.python_parser import parse_requirements_txt
 # from parsers.python_parser import parse_requirements_txt
-# from parsers.java_parser import parse_pom_xml
+from parsers.java_parser import parse_pom_xml
 # from parsers.ruby_parser import parse_gemfile
 # from parsers.go_parser import parse_go_mod
 # from parsers.cpp_parser import parse_cmake_lists_txt  
@@ -102,7 +102,7 @@ def analyze_project(repo_owner, repo_name):
                 parse_requirements_txt(repo_owner, repo_name, manifest_path)
             elif "pom.xml" in manifest_file_name:
                 project_type = "java"
-                # parse_pom_xml(manifest_path)
+                parse_pom_xml(repo_owner, repo_name, manifest_path)
             elif "Gemfile" in manifest_file_name:
                 project_type = "ruby"
                 # parse_gemfile(manifest_path)
@@ -129,8 +129,12 @@ if __name__ == "__main__":
     # repo_name = "reactnd-project-myreads-starter"
 
     #python
-    repo_owner = "ankurchavda"
-    repo_name = "streamify"
+    # repo_owner = "ankurchavda"
+    # repo_name = "streamify"
+
+    #java
+    repo_owner = "harsha3991"
+    repo_name = "java-maven"
 
 
     analyze_project(repo_owner, repo_name)
