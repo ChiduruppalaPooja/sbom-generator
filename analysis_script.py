@@ -5,7 +5,7 @@ from parsers.java_parser import parse_pom_xml
 from parsers.ruby_parser import parse_gemfile
 from parsers.go_parser import parse_go_mod
 # from parsers.cpp_parser import parse_cmake_lists_txt  
-# from parsers.php_parser import parse_composer_json
+from parsers.php_parser import parse_composer_json
 
 def find_manifest_files(repo_owner, repo_name):
     
@@ -19,7 +19,15 @@ def find_manifest_files(repo_owner, repo_name):
         contents = response.json()
 
         
-        manifest_files = [(item['name'], item['path']) for item in contents if item['name'].lower() in ['package.json', 'requirements.txt', 'pom.xml', 'gemfile', 'go.mod', 'CMakeLists.txt', 'composer.json']]
+        # manifest_files = [(item['name'], item['path']) for item in contents if item['name'].lower() in ['package.json', 'requirements.txt', 'pom.xml', 'gemfile', 'go.mod', 'CMakeLists.txt', 'composer.json']]
+        # manifest_files = [
+        #     (item['name'], item['path']) for item in contents
+        #     if item['name'].lower() in ['package.json', 'requirements.txt', 'pom.xml', 'gemfile', 'go.mod', 'CMakeLists.txt', 'composer.json', 'conanfile.txt', 'Makefile']
+        # ]
+        manifest_files = [
+            (item['name'], item['path']) for item in contents
+            if item['name'].lower() in ['package.json', 'requirements.txt', 'pom.xml', 'gemfile', 'go.mod', 'cmakelists.txt', 'composer.json', 'conanfile.txt', 'makefile']
+        ]
         
         return manifest_files
 
@@ -108,12 +116,12 @@ def analyze_project(repo_owner, repo_name):
             elif "go.mod" in manifest_file_name:
                 project_type = "go"
                 parse_go_mod(repo_owner, repo_name, manifest_path)
-            elif "CMakeLists.txt" in manifest_file_name:
-                project_type = "cpp"
-                # parse_cmake_lists_txt(manifest_path)
+            # elif "CMakeLists.txt" in manifest_file_name:
+            #     project_type = "cpp"
+            #     parse_cmake_lists_txt(repo_owner, repo_name, manifest_path)
             elif "composer.json" in manifest_file_name:
                 project_type = "php"
-                # parse_composer_json(manifest_path)
+                parse_composer_json(repo_owner, repo_name, manifest_path)
             else:
                 project_type = "unknown"
 
@@ -144,8 +152,12 @@ if __name__ == "__main__":
     # repo_name = "spdx-sbom-generator"
 
     #cpp
-    repo_owner = "opensbom-generator"
-    repo_name = "spdx-sbom-generator"
+    # repo_owner = "udacity"
+    # repo_name = "CppND-Route-Planning-Project"
+
+    #php
+    # repo_owner = "summerblue"
+    # repo_name = "phphub5"
 
 
 
