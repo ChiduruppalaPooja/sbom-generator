@@ -90,6 +90,8 @@ def find_python_files(repo_owner, repo_name, folder_path=''):
     #     print(f"Failed to fetch repository contents. Status code: {response.status_code}")
     #     return []
 if __name__ == "__main__":
+    # repo_owner='Vision-CAIR'
+    # repo_name='MiniGPT-4'
     repo_owner = 'magic-research'
     repo_name = 'magic-animate'
     # repo_owner = 'yiyang7'
@@ -97,7 +99,8 @@ if __name__ == "__main__":
     # repo_owner = 'My-Machine-Learning-Projects-CT'
     # repo_name = 'Linear-Regression-Prediction-Project-Part-1'
 
-    python_files = find_python_files(repo_owner, repo_name)
+    # python_files = find_python_files(repo_owner, repo_name)
+    python_files = find_python_files(repo_owner, repo_name, folder_path='') 
 
     # if python_files:
     for script_path in python_files:
