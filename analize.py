@@ -25,23 +25,7 @@ def get_python_script_content(repo_owner, repo_name, script_path):
 
         print(f"Invalid encoding or content not found for file '{script_path}'.")
         return None
-
-    # else:
-    #     print(f"Failed to fetch file contents. Status code: {response.status_code}")
-    #     return None
-
-def extract_imports_from_content(content):
-    # tree = ast.parse(content)
-
-    # imports = set()
-
-    # for node in ast.walk(tree):
-    #     if isinstance(node, ast.Import):
-    #         for alias in node.names:
-    #             imports.add(alias.name)
-    #     elif isinstance(node, ast.ImportFrom):
-    #         imports.add(f"{node.module}.{node.names[0].name}")
-    # return imports
+def extract_imports_from_content(content):    
     submodules = set()
     tree = ast.parse(content)
     
@@ -80,39 +64,35 @@ def find_python_files(repo_owner, repo_name, folder_path=''):
         # Recursively search subdirectories
         subdirectories = [file['name'] for file in repo_contents if file['type'] == 'dir']
         for subdir in subdirectories:
-            subdir_files = find_python_files(repo_owner, repo_name, os.path.join(folder_path, subdir))
+            result=os.path.join(folder_path, subdir)
+            result=result.replace('\\','/')
+            subdir_files = find_python_files(repo_owner, repo_name,result)
             if subdir_files is not None:
                 python_files += subdir_files
 
         return python_files
 
-    # else:
-    #     print(f"Failed to fetch repository contents. Status code: {response.status_code}")
-    #     return []
 if __name__ == "__main__":
-    # repo_owner='Vision-CAIR'
-    # repo_name='MiniGPT-4'
     repo_owner = 'magic-research'
     repo_name = 'magic-animate'
-    # repo_owner = 'yiyang7'
-    # repo_name = 'Super_Resolution_with_CNNs_and_GANs'
-    # repo_owner = 'My-Machine-Learning-Projects-CT'
-    # repo_name = 'Linear-Regression-Prediction-Project-Part-1'
-
-    # python_files = find_python_files(repo_owner, repo_name)
     python_files = find_python_files(repo_owner, repo_name, folder_path='') 
-
-    # if python_files:
+    imports=[]
     for script_path in python_files:
-        print(f"\nProcessing file: {script_path}")
+        
+        # print(f"\nProcessing file: {script_path}")
             
         script_content = get_python_script_content(repo_owner, repo_name, script_path)
 
         if script_content is not None:
                 # Extract imports from the script content
-            imports = extract_imports_from_content(script_content)
+            imports=imports+list( extract_imports_from_content(script_content))
+    print("PYTHON MODULES ARE:-")
+    imports=set(imports)
+    for i in imports:
+        print(i,end='\n')
+    
 
 
-            print("Imported modules:")
-            for module in sorted(imports):
-                print(module)
+            # print("Imported modules:")
+            # for module in sorted(imports):
+            #     # print(module)
