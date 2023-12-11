@@ -1,5 +1,5 @@
-import requests
 import re
+import requests
 
 def get_js_files(repo_owner, repo_name, folder_path=''):
     github_token = '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'
@@ -32,7 +32,6 @@ def get_js_files(repo_owner, repo_name, folder_path=''):
     return js_files
 
 def extract_modules_from_js(repo_owner, repo_name, js_files):
-    list=[]
     for js_file in js_files:
         # Construct the complete URL to the raw content
         raw_content_url = f'https://raw.githubusercontent.com/{repo_owner}/{repo_name}/main/{js_file}'
@@ -40,25 +39,21 @@ def extract_modules_from_js(repo_owner, repo_name, js_files):
         try:
             js_content = requests.get(raw_content_url).text
             modules = extract_modules_from_js_content(js_content)
-            list=list+modules
-            # print(f"\nFile: {js_file}")
-            # print("Modules:", modules)
+            print(f"\nFile: {js_file}")
+            print("Modules:", modules)
         except requests.exceptions.RequestException as e:
             print(f"Failed to retrieve content for {js_file}. Error: {e}")
-    list1=set(list)
-    print("\nModules used in JavaScript files:")
-    for i in list1:
-        print(i)
+
 def extract_modules_from_js_content(js_content):
-    import_export_pattern1 = re.compile(r'\b(?:import|require|export)(?:\s*[\w*{}, ]+\s*from\s*)?[\'"]([^\'"]+)[\'"]', re.MULTILINE)#FOR EX:-import React from 'react'import { BrowserRouter, Routes, Route } from 'react-router-dom';import Adn from "./components/Adn"
-    import_export_pattern = re.compile(r'\b(?:import|require|export)\s+(?:(?:\{[^\}]*\})?\s*from\s*)?[\'"]([^\'"]+)[\'"]', re.MULTILINE)#FOR DIRECT IMPORTS Ex import '@testing-library/jest-dom'; 
-    modules1=re.findall(import_export_pattern1,js_content)
-    modules2= re.findall(import_export_pattern, js_content)
-    modules=modules1+modules2
+    # The regular expression to find 'require' statements
+    modules = set(re.findall(r"\brequire\s*\(\s*['\"]([^'\"]+)['\"]\s*\)", js_content))
+
     return modules
 
 if __name__ == "__main__":
-    repo_owner ='akhushal'
-    repo_name ='Neonflake'
+    repo_owner ='germancutraro'
+    repo_name ='Shopping-Cart-MERN'
     js_files = get_js_files(repo_owner, repo_name, folder_path='')
+
+    print("\nModules used in JavaScript files:")
     extract_modules_from_js(repo_owner, repo_name, js_files)
