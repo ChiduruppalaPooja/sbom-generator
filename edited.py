@@ -3,6 +3,7 @@ import requests
 import base64
 import ast
 import subprocess
+import pandas as pd
 
 github_token = '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'
 def get_python_script_content(repo_owner, repo_name, script_path):
@@ -26,9 +27,9 @@ def get_python_script_content(repo_owner, repo_name, script_path):
         print(f"Invalid encoding or content not found for file '{script_path}'.")
         return None
 
-    # else:
-    #     print(f"Failed to fetch file contents. Status code: {response.status_code}")
-    #     return None
+    else:
+        print(f"Failed to fetch file contents. Status code: {response.status_code}")
+        return None
 
 def extract_imports_from_content(content):
     # tree = ast.parse(content)
@@ -62,11 +63,11 @@ def extract_imports_from_content(content):
 
     return submodules
 
-def find_python_files(repo_owner, repo_name, folder_path=''):
+def find_python_files(repo_owner, repo_name, folder_path):
     # GitHub API endpoint to get the repository contents
     api_url = f'https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{folder_path}'
     headers = {'Authorization': f'token {github_token}'}
-
+    # print(folder_path)
     # Make a request to the GitHub API
     response = requests.get(api_url,headers=headers)
 
@@ -74,21 +75,26 @@ def find_python_files(repo_owner, repo_name, folder_path=''):
         # Parse the JSON response
         repo_contents = response.json()
 
-        # Filter for Python files
-        python_files = [file['path'] for file in repo_contents if file['name'].endswith('.py')]
-
+        # external_directories = [item['name'] for item in repo_contents if item['type'] == 'dir']
         # Recursively search subdirectories
         subdirectories = [file['name'] for file in repo_contents if file['type'] == 'dir']
+        # Filter for Python files
+        python_files = [file['path'] for file in repo_contents if file['name'].endswith('.py')]
+        # print(subdirectories)
         for subdir in subdirectories:
-            subdir_files = find_python_files(repo_owner, repo_name, os.path.join(folder_path, subdir))
+            result = os.path.join(folder_path, subdir)
+            result = result.replace('\\', '/')
+            subdir_files = find_python_files(repo_owner, repo_name,result)
             if subdir_files is not None:
                 python_files += subdir_files
 
         return python_files
 
-    # else:
-    #     print(f"Failed to fetch repository contents. Status code: {response.status_code}")
-    #     return []
+    else:
+        print(f"Failed to fetch repository contents. Status code: {response.status_code}")
+        return []
+
+
 if __name__ == "__main__":
     repo_owner = 'magic-research'
     repo_name = 'magic-animate'
@@ -96,20 +102,30 @@ if __name__ == "__main__":
     # repo_name = 'Super_Resolution_with_CNNs_and_GANs'
     # repo_owner = 'My-Machine-Learning-Projects-CT'
     # repo_name = 'Linear-Regression-Prediction-Project-Part-1'
+    python_files = find_python_files(repo_owner, repo_name , '')
+    # print(python_files)
 
-    python_files = find_python_files(repo_owner, repo_name)
-
-    # if python_files:
+    # # if python_files:
+    a = 0
+    imports = []
     for script_path in python_files:
         print(f"\nProcessing file: {script_path}")
             
         script_content = get_python_script_content(repo_owner, repo_name, script_path)
+        imports = imports + list(extract_imports_from_content(script_content))
 
-        if script_content is not None:
-                # Extract imports from the script content
-            imports = extract_imports_from_content(script_content)
+        # if script_content is not None:
+        #         # Extract imports from the script content
 
 
-            print("Imported modules:")
-            for module in sorted(imports):
-                print(module)
+        #     print("Imported modules:")
+        #     for module in sorted(imports):
+        #         print(module)
+    imports = set(imports)
+    for i in imports:
+        print(i,end='\n')
+    # print(len(imports))
+    # imports = pd.DataFrame(imports)
+    # print(imports.shape)
+    
+    # print(imports)
