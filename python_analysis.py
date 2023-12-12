@@ -2,8 +2,6 @@ import os
 import requests
 import base64
 import ast
-import subprocess
-
 github_token = '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'
 def get_python_script_content(repo_owner, repo_name, script_path):
     # GitHub API endpoint to get the contents of a file
