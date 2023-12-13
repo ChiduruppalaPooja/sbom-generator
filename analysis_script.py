@@ -57,8 +57,8 @@ def get_repo_files(repo_owner, repo_name, token):
         find_ruby_modules(repo_owner,repo_name,github_token,ruby_files)
 # Example usage
 #PYTHON EXAMPLE
-repo_owner = 'magic-research'
-repo_name = 'magic-animate'
+# repo_owner = 'magic-research'
+# repo_name = 'magic-animate'
 #PHP EXAMPLE
 # repo_owner ='PuneethReddyHC'  # Replace with the repository owner
 # repo_name = 'online-shopping-system-advanced'  # Replace with the repository name

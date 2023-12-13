@@ -43,12 +43,15 @@ def extract_modules_from_js(repo_owner, repo_name, js_files):
         except requests.exceptions.RequestException as e:
             print(f"Failed to retrieve content for {js_file}. Error: {e}")
 
-    print("\nModules used in JavaScript files:")
-    for module in module_set:
-        print(module)
+    # print("\nModules used in JavaScript files:")
+    # for module in module_set:
+    #     print(module)
+    module_set=list(module_set)
     if len(module_set)==0:
-        print("NO MODULES FOUND IN JS FILES")
+        return"NO MODULES FOUND IN JS FILES"
 
+    return"Modules used in JavaScript files:-\n",module_set
+    
 def extract_modules_from_js_content(js_content):
     # import_export_pattern = re.compile(r'\b(?:import|require|export)(?:\s*(?:\{[^\}]*\}|[^\s]+)\s*from\s*)?[\'"]([^\'"]+)[\'"]', re.MULTILINE)
     import_export_pattern1 = re.compile(r'\b(?:import|require|export)(?:\s*[\w*{}, ]+\s*from\s*)?[\'"]([^\'"]+)[\'"]', re.MULTILINE)#FOR EX:-import React from 'react'import { BrowserRouter, Routes, Route } from 'react-router-dom';import Adn from "./components/Adn"

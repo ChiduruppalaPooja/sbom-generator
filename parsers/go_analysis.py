@@ -46,11 +46,13 @@ def extract_imports_from_go(repo_owner, repo_name, go_files):
         except requests.exceptions.RequestException as e:
             print(f"Failed to retrieve content for {go_file}. Error: {e}")
 
-    print("\nMODULES USED IN Go FILES:")
-    for imp in imports_set:
-        print(imp)
+    # print("\nMODULES USED IN Go FILES:")
+    # for imp in imports_set:
+    #     print(imp)
+    imports_set=list(imports_set)
     if len(imports_set)==0:
-        print("NO GO MODULES ARE FOUND")
+        return"NO GO MODULES ARE FOUND"
+    return "MODULES USED IN Go Files:-\n",imports_set
 
 def extract_imports_from_go_content(go_content):
     import_pattern = re.compile(r'^\s*import\s*\(\s*([^)]+)\s*\)', re.MULTILINE)

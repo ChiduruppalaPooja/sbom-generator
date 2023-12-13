@@ -95,13 +95,16 @@ def find_php_modules(repo_owner,repo_name,php_file_paths):
         for php_file_path in php_file_paths:
             # print(f"\nProcessing PHP file: {php_file_path}")
             final_php_modules=final_php_modules+find_php_modules_and_extensions(repo_owner, repo_name, php_file_path)
-        print("PHP Modules are:-")
+        # print("PHP Modules are:-")
         final_php_modules=set(final_php_modules)
         # print(final_php_modules)
-        for i in final_php_modules:
-            print(i)
+        final_php_modules=list(final_php_modules)
         if len(final_php_modules)==0:
-            print("NO MODULES FOUND IN PHP FILES")
+            return"NO MODULES FOUND IN PHP FILES"
+
+        # for i in final_php_modules:
+        #     print(i)
+        return "PHP Modules are:-\n",final_php_modules
 
 
 # if __name__ == "__main__":
