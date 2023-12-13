@@ -13,16 +13,16 @@ def get_repo_contents(owner, repo, token, path=""):
         print(f"Error fetching repository contents. Status code: {response.status_code}")
         return None
 
-def get_ruby_files_paths(contents):
-    ruby_files = []
-    for item in contents:
-        if item['type'] == 'file' and item['name'].endswith('.rb'):
-            ruby_files.append(item['path'])
-        elif item['type'] == 'dir':
-            sub_contents = get_repo_contents(owner, repo, token, item['path'])
-            if sub_contents:
-                ruby_files.extend(get_ruby_files_paths(sub_contents))
-    return ruby_files
+# def get_ruby_files_paths(contents):
+#     ruby_files = []
+#     for item in contents:
+#         if item['type'] == 'file' and item['name'].endswith('.rb'):
+#             ruby_files.append(item['path'])
+#         elif item['type'] == 'dir':
+#             sub_contents = get_repo_contents(owner, repo, token, item['path'])
+#             if sub_contents:
+#                 ruby_files.extend(get_ruby_files_paths(sub_contents))
+#     return ruby_files
 
 def get_file_content(owner, repo, path, token):
     headers = {'Authorization': f'token {token}'}
@@ -50,19 +50,43 @@ def extract_modules(file_content):
     modules = module_matches + require_matches
 
     return modules
-
-# Replace these with your GitHub repository information and personal access token
-owner = 'pact-foundation'
-repo = 'pact-ruby'
-token = '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'
-final_modules=[]
+def find_ruby_modules(owner,repo,token,file_path):
+    final_modules=[]
 
 # Get repository contents
-repo_contents = get_repo_contents(owner, repo, token)
+    repo_contents = get_repo_contents(owner, repo, token)
 
-if repo_contents:
+    if repo_contents:
     # Get paths of all Ruby files
-    ruby_files_paths = get_ruby_files_paths(repo_contents)
+    #    ruby_files_paths = get_ruby_files_paths(repo_contents)
+        for file_path in file_path:
+           file_content = get_file_content(owner, repo, file_path, token)
+           if file_content:
+            modules = extract_modules(file_content)
+            # print(f"\nFile: {file_path}")
+            # print("Modules:", modules)
+            final_modules=final_modules+modules
+        print("Modules in Ruby Files:")
+    # print(final_modules)
+        final_modules=set(final_modules)
+        for i in final_modules:
+           print(i)
+        if len(final_modules)==0:
+            print("NO MODULES FOUND IN RUBY FILES")
+
+
+# Replace these with your GitHub repository information and personal access token
+# owner = 'pact-foundation'
+# repo = 'pact-ruby'
+# token = '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'
+# final_modules=[]
+
+# # Get repository contents
+# repo_contents = get_repo_contents(owner, repo, token)
+
+# if repo_contents:
+#     # Get paths of all Ruby files
+#     ruby_files_paths = get_ruby_files_paths(repo_contents)
 
     # Print Ruby files paths
     # print("Ruby Files Paths:")
@@ -71,15 +95,15 @@ if repo_contents:
 
     # Extract and print modules from each Ruby file
     # print("\nModules in Ruby Files:")
-    for file_path in ruby_files_paths:
-        file_content = get_file_content(owner, repo, file_path, token)
-        if file_content:
-            modules = extract_modules(file_content)
-            # print(f"\nFile: {file_path}")
-            # print("Modules:", modules)
-            final_modules=final_modules+modules
-    print("Modules in Ruby Files:")
-    # print(final_modules)
-    final_modules=set(final_modules)
-    for i in final_modules:
-        print(i)
+    # for file_path in ruby_files_paths:
+    #     file_content = get_file_content(owner, repo, file_path, token)
+    #     if file_content:
+    #         modules = extract_modules(file_content)
+    #         # print(f"\nFile: {file_path}")
+    #         # print("Modules:", modules)
+    #         final_modules=final_modules+modules
+    # print("Modules in Ruby Files:")
+    # # print(final_modules)
+    # final_modules=set(final_modules)
+    # for i in final_modules:
+    #     print(i)

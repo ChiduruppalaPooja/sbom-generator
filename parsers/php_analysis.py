@@ -1,41 +1,41 @@
 import requests
 import re
 
-def get_php_file_paths(repo_owner, repo_name, path=''):
-    # Provide your GitHub personal access token
-    access_token = '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'
+# def get_php_file_paths(repo_owner, repo_name, path=''):
+#     # Provide your GitHub personal access token
+#     access_token = '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'
 
-    # Construct the GitHub API URL to get the repository contents
-    api_url = f'https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{path}'
+#     # Construct the GitHub API URL to get the repository contents
+#     api_url = f'https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{path}'
 
-    # Set up the request headers with the access token
-    headers = {
-        'Authorization': f'Token {access_token}',
-        'Accept': 'application/vnd.github.v3.raw',
-    }
+#     # Set up the request headers with the access token
+#     headers = {
+#         'Authorization': f'Token {access_token}',
+#         'Accept': 'application/vnd.github.v3.raw',
+#     }
 
-    try:
-        # Make a request to get the content of the repository
-        response = requests.get(api_url, headers=headers)
-        response.raise_for_status()
+#     try:
+#         # Make a request to get the content of the repository
+#         response = requests.get(api_url, headers=headers)
+#         response.raise_for_status()
 
-        contents = response.json()
+#         contents = response.json()
 
-        php_file_paths = []
+#         php_file_paths = []
 
-        for content in contents:
-            if content['type'] == 'file' and content['name'].endswith('.php'):
-                php_file_paths.append(content['path'])
-            elif content['type'] == 'dir':
-                # Recursive call for subdirectories
-                subdirectory_files = get_php_file_paths(repo_owner, repo_name, f"{path}/{content['name']}")
-                php_file_paths.extend(subdirectory_files)
+#         for content in contents:
+#             if content['type'] == 'file' and content['name'].endswith('.php'):
+#                 php_file_paths.append(content['path'])
+#             elif content['type'] == 'dir':
+#                 # Recursive call for subdirectories
+#                 subdirectory_files = get_php_file_paths(repo_owner, repo_name, f"{path}/{content['name']}")
+#                 php_file_paths.extend(subdirectory_files)
 
-        return php_file_paths
+#         return php_file_paths
 
-    except requests.exceptions.RequestException as e:
-        print(f"Error: {e}")
-        return None
+#     except requests.exceptions.RequestException as e:
+#         print(f"Error: {e}")
+#         return None
 
 def find_php_modules_and_extensions(repo_owner, repo_name, file_path):
     # Provide your GitHub personal access token
@@ -87,15 +87,9 @@ def find_php_modules_and_extensions(repo_owner, repo_name, file_path):
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
         return None
-
-if __name__ == "__main__":
-    repo_owner = 'PuneethReddyHC'  # Replace with the repository owner
-    repo_name = 'online-shopping-system-advanced'  # Replace with the repository name
-    # repo_owner='summerblue'
-    # repo_name='phphub5'
-    # Get all PHP file paths in the repository
+def find_php_modules(repo_owner,repo_name,php_file_paths):
     final_php_modules=[]
-    php_file_paths = get_php_file_paths(repo_owner, repo_name)
+    # php_file_paths = get_php_file_paths(repo_owner, repo_name)
     # a=0
     if php_file_paths:
         for php_file_path in php_file_paths:
@@ -106,5 +100,27 @@ if __name__ == "__main__":
         # print(final_php_modules)
         for i in final_php_modules:
             print(i)
+        if len(final_php_modules)==0:
+            print("NO MODULES FOUND IN PHP FILES")
+
+
+# if __name__ == "__main__":
+#     repo_owner = 'PuneethReddyHC'  # Replace with the repository owner
+#     repo_name = 'online-shopping-system-advanced'  # Replace with the repository name
+#     # repo_owner='summerblue'
+#     # repo_name='phphub5'
+#     # Get all PHP file paths in the repository
+#     final_php_modules=[]
+#     # php_file_paths = get_php_file_paths(repo_owner, repo_name)
+#     # a=0
+#     if php_file_paths:
+#         for php_file_path in php_file_paths:
+#             # print(f"\nProcessing PHP file: {php_file_path}")
+#             final_php_modules=final_php_modules+find_php_modules_and_extensions(repo_owner, repo_name, php_file_path)
+#         print("PHP Modules are:-")
+#         final_php_modules=set(final_php_modules)
+#         # print(final_php_modules)
+#         for i in final_php_modules:
+#             print(i)
 
 
