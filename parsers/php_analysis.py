@@ -100,7 +100,7 @@ def find_php_modules(repo_owner,repo_name,php_file_paths):
         # print(final_php_modules)
         final_php_modules=list(final_php_modules)
         if len(final_php_modules)==0:
-            return"NO MODULES FOUND IN PHP FILES"
+            return"NO MODULES FOUND","IN PHP FILES"
 
         # for i in final_php_modules:
         #     print(i)

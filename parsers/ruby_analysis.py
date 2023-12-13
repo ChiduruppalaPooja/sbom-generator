@@ -71,7 +71,7 @@ def find_ruby_modules(owner,repo,token,file_path):
         final_modules=set(final_modules)
         final_modules=list(final_modules)
         if len(final_modules)==0:
-            return"NO MODULES FOUND IN RUBY FILES"
+            return"NO MODULES FOUND","IN RUBY FILES"
         # for i in final_modules:
         #    print(i)
         return "RUBY Modules are:-\n",final_modules

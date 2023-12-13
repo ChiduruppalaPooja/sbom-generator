@@ -46,15 +46,20 @@ def get_repo_files(repo_owner, repo_name, token):
     # print("Ruby Files:",ruby_files)
 
     if len(python_files)>0:
-        find_python_modules(repo_owner,repo_name,python_files)
+        lang_name,lang_modules=find_python_modules(repo_owner,repo_name,python_files)
+        return lang_name,lang_modules
     if len(js_files)>0:
-        extract_modules_from_js(repo_owner,repo_name,js_files)
+        lang_name,lang_modules=extract_modules_from_js(repo_owner,repo_name,js_files)
+        return lang_name,lang_modules
     if len(php_files)>0:
-        find_php_modules(repo_owner,repo_name,php_files)
+        lang_name,lang_modules=find_php_modules(repo_owner,repo_name,php_files)
+        return lang_name,lang_modules
     if len(go_files)>0:
-        extract_imports_from_go(repo_owner,repo_name,go_files)
+        lang_name,lang_modules=extract_imports_from_go(repo_owner,repo_name,go_files)
+        return lang_name,lang_modules
     if len(ruby_files)>0:
-        find_ruby_modules(repo_owner,repo_name,github_token,ruby_files)
+        lang_name,lang_modules=find_ruby_modules(repo_owner,repo_name,github_token,ruby_files)
+        return lang_name,lang_modules
 # Example usage
 #PYTHON EXAMPLE
 # repo_owner = 'magic-research'

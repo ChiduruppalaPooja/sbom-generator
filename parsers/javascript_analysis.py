@@ -48,7 +48,7 @@ def extract_modules_from_js(repo_owner, repo_name, js_files):
     #     print(module)
     module_set=list(module_set)
     if len(module_set)==0:
-        return"NO MODULES FOUND IN JS FILES"
+        return"NO MODULES FOUND","IN JS FILES"
 
     return"Modules used in JavaScript files:-\n",module_set
     

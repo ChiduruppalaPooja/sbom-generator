@@ -51,7 +51,7 @@ def extract_imports_from_go(repo_owner, repo_name, go_files):
     #     print(imp)
     imports_set=list(imports_set)
     if len(imports_set)==0:
-        return"NO GO MODULES ARE FOUND"
+        return"NO MODULES Found","In Go Files"
     return "MODULES USED IN Go Files:-\n",imports_set
 
 def extract_imports_from_go_content(go_content):

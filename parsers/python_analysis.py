@@ -57,7 +57,7 @@ def find_python_modules(repo_owner,repo_name,python_files):
     imports=set(imports)
     imports=list(imports)
     if len(imports)==0:
-        return"NO MODULES FOUND IN PYTHON FILES"
+        return"NO MODULES FOUND","IN PYTHON FILES"
     return "Python Modules are:-\n",imports
 # def find_python_files(repo_owner, repo_name, folder_path=''):
 #     # GitHub API endpoint to get the repository contents
